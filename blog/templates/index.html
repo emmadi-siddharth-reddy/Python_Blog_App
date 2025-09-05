@@ -6,12 +6,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>My Blog</title>
-    <link rel="stylesheet" href="{% static 'blog/styles.css' %}">
 </head>
 <body>
     <h1>Blog Posts</h1>
+    {% if user.is_authenticated %}
+    <p><a href="{% url 'post_create' %}">Create New Post</a></p>
+    <form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="submit"> Logout</button>
+</form>
+
+    {% else %}
+    <p> <a href="{% url 'login'%}">Login</a></p>
+    {% endif %}
+
+    
     {% for post in posts %}
-        <h2>{{ post.title }}</h2>
+        <h2>
+            <a href="{% url 'post_detail' post.id %}"> {{ post.title }} </a>
+        </h2>
         <p>{{ post.content|truncatewords:20 }}</p>
         <small>By {{ post.author }} on {{ post.created_at }}</small>
         <hr>
