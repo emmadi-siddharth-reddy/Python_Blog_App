@@ -9,5 +9,11 @@
     <p>{{post.content}}</p>
     <small>By {{ post.author }} on {{ post.created_at }}</small>
     <br><br>
+    {% if user == post.author %}
+        <p>
+            <a href="{% url 'post_edit' post.id %}"> Edit Post </a> | 
+            <a href="{% url 'post_delete' post.id %}">Delete Post </a>
+    {%endif%}
+    <br></br>
     <a href="/">Back to Home</a>
 </html>
