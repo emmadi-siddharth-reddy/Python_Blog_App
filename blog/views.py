@@ -1,11 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from rest_framework import generics
+
+from .serializer import PostSerializer
 
 from .form import PostForm
 from .models import Post
 
-# Create your views here.
+
 def home(request):
     posts = Post.objects.all()
     return render(request, "index.html",{"posts":posts})
@@ -46,3 +49,12 @@ def post_delete(request, id):
     post = get_object_or_404(Post, id=id)
     post.delete()
     return redirect('home')
+
+
+class PostListAPI(generics.ListCreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
+    
+class PostDetailAPI(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostSerializer
